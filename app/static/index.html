@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111315" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Osiris" />
+  <title>Osiris</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/static/icons/osiris.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/static/icons/osiris-180.png" />
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="desktop-header">
+      <div class="brand-mark" aria-hidden="true">O</div>
+      <div>
+        <strong>Osiris</strong>
+        <span>Personal context system · V0</span>
+      </div>
+    </header>
+
+    <main>
+      <section id="page-osiris" class="page active" aria-labelledby="osiris-heading">
+        <div class="page-width dashboard-page">
+          <div class="hero-copy">
+            <p class="eyebrow" id="dashboard-date"></p>
+            <h1 id="osiris-heading">What are you thinking?</h1>
+            <p class="lede">Capture the thought first. Organize it later.</p>
+          </div>
+
+          <form id="capture-form" class="capture-card">
+            <label class="sr-only" for="capture-input">Capture an idea</label>
+            <textarea id="capture-input" rows="4" maxlength="20000" placeholder="Type a thought…" required></textarea>
+            <div class="capture-actions">
+              <button type="submit" class="primary-button">Save idea</button>
+            </div>
+          </form>
+
+          <div id="dashboard-stats" class="stat-row" aria-live="polite"></div>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Recently</p>
+                <h2>Ideas in motion</h2>
+              </div>
+              <button class="text-button" data-nav="ideas">View all</button>
+            </div>
+            <div id="recent-ideas" class="idea-grid compact-grid"></div>
+            <div id="recent-empty" class="empty-state hidden">
+              <div class="empty-symbol">✦</div>
+              <h3>Your first thought starts here.</h3>
+              <p>Anything you save above becomes a persistent idea with its own timeline.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="page-ideas" class="page" aria-labelledby="ideas-heading">
+        <div class="page-width ideas-page">
+          <div class="ideas-header">
+            <div>
+              <p class="eyebrow">Library</p>
+              <h1 id="ideas-heading">Ideas</h1>
+            </div>
+            <button id="new-idea-button" class="primary-button small">New idea</button>
+          </div>
+
+          <div class="toolbar">
+            <label class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 20-5.2-5.2a7 7 0 1 0-1 1L20 21l1-1ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/></svg>
+              <input id="idea-search" type="search" placeholder="Search ideas and notes" autocomplete="off" />
+            </label>
+            <select id="status-filter" aria-label="Idea status">
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
+              <option value="all">All</option>
+            </select>
+            <div class="segmented" aria-label="Idea view">
+              <button id="grid-view" class="active" type="button" aria-label="Card view">▦</button>
+              <button id="list-view" type="button" aria-label="List view">☷</button>
+            </div>
+          </div>
+
+          <div id="ideas-container" class="idea-grid"></div>
+          <div id="ideas-empty" class="empty-state hidden">
+            <div class="empty-symbol">◇</div>
+            <h3>No ideas found.</h3>
+            <p>Capture a thought from Osiris, or create one here.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Primary navigation">
+      <button class="nav-item active" data-page="osiris">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 6v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V6l-8-4Zm0 3 5 2.5V12c0 3.5-2.1 6.8-5 7.9C9.1 18.8 7 15.5 7 12V7.5L12 5Z"/></svg>
+        <span>Osiris</span>
+      </button>
+      <button class="nav-item" data-page="ideas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 4v2h8V7H8Zm0 4v2h8v-2H8Zm0 4v2h5v-2H8Z"/></svg>
+        <span>Ideas</span>
+      </button>
+    </nav>
+  </div>
+
+  <dialog id="idea-dialog">
+    <div class="dialog-shell">
+      <div class="dialog-header">
+        <button id="dialog-close" class="icon-button ghost" aria-label="Close idea">←</button>
+        <span class="dialog-kicker">Idea</span>
+        <button id="archive-button" class="text-button danger-muted">Archive</button>
+      </div>
+
+      <div class="dialog-content">
+        <input id="idea-title" class="idea-title-input" maxlength="180" aria-label="Idea title" />
+        <p id="idea-meta" class="subtle"></p>
+
+        <div class="timeline-heading">
+          <p class="eyebrow">Timeline</p>
+        </div>
+        <div id="idea-timeline" class="timeline"></div>
+
+        <form id="note-form" class="note-composer">
+          <label class="sr-only" for="note-input">Add note</label>
+          <textarea id="note-input" rows="3" maxlength="20000" placeholder="Add to this idea…" required></textarea>
+          <button class="primary-button" type="submit">Add note</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

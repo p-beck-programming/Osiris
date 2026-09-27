@@ -1,0 +1,41 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.vscode/
+data/*.db
+data/*.db-*
+.DS_Store
+data/*.pid
+data/*.log
+data/semantic.index
+data/semantic_metadata.json
+*.orig
+*.before-*
+*.patch
+
+# Personal and generated Osiris data
+/data/
+/backups/
+
+# Python
+/.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Generated files
+*.log
+*.pid
+
+# Operating system and editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
